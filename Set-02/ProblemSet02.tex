@@ -1,0 +1,249 @@
+% DOCUMENT FORMATING
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+
+% PACKAGES
+\usepackage{amsmath} % For extended formatting
+\usepackage{amssymb} % For math symbols
+\usepackage{amsthm} % For proof environment
+\usepackage{array} % For tables
+\usepackage{enumerate} % For lists
+\usepackage{extramarks} % For headers and footers
+\usepackage{blindtext}
+\usepackage{fancyhdr} % For custom headers
+\usepackage{graphicx} % For inserting images
+\usepackage{multicol} % For multiple columns
+\usepackage{verbatim} % For displaying code
+\usepackage{tkz-euclide}
+\usepackage{pgfplots}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+% SET UP HEADER AND FOOTER
+\pagestyle{fancy}
+\lhead{\MyCourse} % Top left header
+\chead{\MyTopicTitle} % Top center header
+\rhead{\MyAssignment} % Top right header
+\lfoot{\MyCampus} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{\MySemester} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+% ----------
+% TITLES AND NAMES 
+% ----------
+
+\newcommand{\MyCourse}{ICS 311, Sadowski}
+\newcommand{\MyTopicTitle}{Problem Set 2}
+\newcommand{\MyAssignment}{Taylor D. Gabatino}
+\newcommand{\MySemester}{Fall 2020}
+\newcommand{\MyCampus}{University of Hawaii at Manoa}
+\begin{document}
+%Begin the Proof of Asymptotic Bounds
+\subsection*{1. Proof of Asymptotic Bounds}
+\textbf{5 points} \\
+\textbf{(a)} Show that the function \textbf{$f(n)=3n^2-2n$ is $\theta(n^2)$}. Suggested steps: \\
+\linebreak
+\quad 1.  Write the inequalities required by the definition of $\theta$, replacing f(n) and g(n) with the actual functions above. \\
+\linebreak
+\begin{center}
+The inequality can be defined as followed: \\
+$c_1n^2 \leqslant 3n^2 - 2n \leqslant c_2n^2$ 
+\end{center}
+\linebreak
+\quad 2. Choose the needed constants, and write the inequalities with these constants. 
+\begin{center}
+Let $c_1 = 3$ and $c_2 = 4$ \\
+Thus this can be rewritten with the constants: \\
+$3n^2 \leqslant 3n^2 - 2n \leqslant 4n^2$ 
+\end{center}
+\quad 3. Prove that the inequalities hold for $\forall n \geqslant n_0$ 
+\begin{center}
+By dividing both sides of the inequalities by $n^2$ \\
+$3 \leqslant 3 - 2n \leqslant 4$
+This inequality will hold true given that $n > n_0 = 1$ \\
+$\therefore$ It is true that $f(n) = 3n^2 - 2n$ holds to be $\theta(n^2)$
+\end{center}
+\linebreak
+\textbf{(b) "little o"}: Consider the following proposed proof that $3n^2+n=o(n^2)$\\
+\quad Let $c=4$, $n_0 = 2$.
+\quad Then $3n^2 + n < 4n^2 = 3n^2 + n^2$, for all $n \geqslant n_0$, since $n < n^2$ for all $n > 1$. We showed strict inequality. Is this a correct little-o proof? Why or why not? \\
+\begin{center}
+The definition of little-o is as follows: \\
+$g(g(n)) = {(0 \leqslant f(n) < c(g(n)))}$ \\
+Let $f(n) = 3n^2 + n$ and let $g(n) = n^2$. \\
+Therefore,  it can be proven that $f(n) = 3n^2 + n \leqslant 4n^2$ such that $n \geqslant 0$. \\
+Thus, $f(n) \leqslant c * g(n) \forall n \geqslant 0$  where $c = 4$ \\
+$\therefore$ The definition of little-o proves that $4n^2 + n = o(n^2)$ \\
+\end{center}
+\linebreak
+%Begin subsection Tree Traversals
+\subsection*{2. Tree Traversals}
+\textbf{5 points} \\
+\linebreak
+\textit{In class you wrote a recursive procedure for traversal of a binary tree in O(n) time,  printing out the keys of the nodes. Hee you write two other tree traversal procedures. The first is a variation of what you wrote in class; the second is on a different kind of tree from CLRS pages 248-249 and in the lecture notes and screencast.} \\
+\linebreak
+\textbf{(a)} Write an O(n) time \textbf{non-recursive} procedre that, given an n-node binary tree, prints out the key of each node of the tree in \textbf{preorder}. Assume that trees consist of vertices class TreeNode with instance variables parent, left, right, and key. Your procedure takes a TreeNode as its argument (the root of the tree). \textbf{Use a stack as an auxillary data structure}. \\
+\linebreak
+\begin{algorithm}[H]
+\caption{printBinaryTreeNodes(TreeNode root)}
+\begin{algorithmic}[H]
+\State \textbf{if} (node == NULL) 
+\State \qquad \textbf{return} ROOT NULL
+\State s = new()
+\State s.push(root)
+\State \textbf{while} (s.isEmpty() == FALSE)
+\State \qquad TreeNode baseNode = s.top()
+\State \qquad Print out the base node key
+\State \qquad s.pop()
+\State \qquad \textbf{if} (baseNode.right != NULL)
+\State \qquad \qquad s.push(baseNode.right)
+\State \qquad \textbf{if} (baseNode.left != NULL)
+\State \qquad \qquad s.push(baseNode.left)
+\end{algorithmic}
+\end{algorithm}
+\textbf{(b)} Prove that your solution works and is O(n). \\
+\linebreak
+Note: Each line of the algorithm corresponds to a single line of code in pseudo code. \\
+Given the first lines corresponding 1-4 will run in $\theta(1)$ and that lines 5-12 will take $\theta(n)$,  this can be mathematically represented as: \\
+\begin{center}
+ $\theta(1) * theta(n) = theta(n) $ by domination of leading terms.  
+\end{center}
+The algorithm will therefore terminate until the stack is empty; this will not occur until every node that is within the tree is pushed onto the stack, and popped off after the key in it is printed. \\
+\linebreak
+\subsection*{3. Catenable Stack}
+\linebreak
+\textbf{10 points} \\
+\linebreak
+ In this problem you will design a data structure that implements Stack ADT using singly-linked list instead of an array. In addition your stack will have the following additional operation: \\
+ \linebreak
+ public catenate(Stack s); // apends the contents of Stack s to the current stack \\
+ \linebreak
+ The new operation will have the following properties: \\
+ \linebreak
+ Let n = s1.size(), m= s2.size(). Then executing s1.catenate(s2) results in the following: \\
+ \quad 1. The new size of s1 is the sum of the size of s2 and the original size of s1, i.e., the following evaluates to true: s1.size() == n + m. \\
+ \quad 2. Top n elements of s1 afte the call s1.catenate(s2) are the same as the elements of s1 before the call. The bottom m elements of s1 after the call s1.catenate(s2) are the same as the elements of s2 before the call. \\
+ Notice that s1 is modified (we don't make a new Stack object). \\
+ \linebreak
+ \textbf{(a)} The implementation described in the book, lecture notes and screencasts uses an array to implement Stack ADT. Can you implement catenate(Stack s) operation that runs in O(1) time for such implementation? If yes, write down the algorithm that achieves that and prove that it runs in O(1) time. if not, describe what goes wrong. \\
+ \linebreak
+ It is not possible for there for be an algorithm for Stack ADT to run in O(1) time.  The reason why this is not possible, is because copying contents of an array from one to the other requires the algorithm to search through contents of each element, which takes O(n) time.  \\
+ \linebreak
+ \textbf{(b)} Write down algorithms that implement the original Stack ADT using a singly-linked list instead of the array.  Using class ListNode with instance variables key and next, write pseudocode for implementing each operation of Stack ADT: Stack(), push(Object o), pop(),  size(), isEmpty(), top(). Be sure your code supports the catenate operation (next question). \\
+ \linebreak
+ From a review of ICS211, it is given that the operations of Stack work on the first element of a given list of k elements as follows: \\
+ %Stack
+\begin{algorithm}[H]
+\caption{Stack( )}
+\begin{algorithmic}[H]
+\State Node = null
+\State size = 0
+\end{algorithmic}
+\end{algorithm}
+%Push 
+The push method will point the head to a new element, and its new element will point to the element before the first. \\
+\begin{algorithm}[H]
+\caption{push(Object o )}
+\begin{algorithmic}[H]
+\State Node newNode = new Node(o)
+\State newNode.next = top
+\State top = newNode
+\State ++size
+\end{algorithmic}
+\end{algorithm}
+%Pop
+The pop method will check to see the data that is in the first element, and makes the head of the stack point to the head.next.next. \\
+\begin{algorithm}[H]
+\caption{Object pop()}
+\begin{algorithmic}[H]
+\State \textbf{if} isEmpty()
+\State \qquad print the error of nothing in Stack
+\State \textbf{else}
+\State \qquad newObj = top.key
+\State \qquad top = top.next 
+\State \qquad --size
+\State \textbf{return} newObj
+\end{algorithmic}
+\end{algorithm}
+%Size
+The size will return the size of the stack, which maintains a counter for how many items are within the stack that changes. \\
+\begin{algorithm}[H]
+\caption{int size()}
+\begin{algorithmic}[H]
+\State \textbf{return} size of the stack
+\end{algorithmic}
+\end{algorithm}
+%isEmpty
+This method will return 0, if the size of the stack is 0. \\
+\begin{algorithm}[H]
+\caption{isEmpty()}
+\begin{algorithmic}[H]
+\State \textbf{return} size == 0
+\end{algorithmic}
+\end{algorithm}
+ \textbf{(c)} Design an algorithm that implements catenate (Stack s) operation in O(1) time.  Write down the algorithm and prove that it runs in O(1) time. \\
+ \linebreak
+ \begin{algorithm}[H]
+\caption{catenate(Stack s)}
+\begin{algorithmic}[H]
+\State \textbf{if} stack = empty 
+\State \qquad point the head to front of the stack and sets to s.head
+\State \textbf{else}
+\State \qquad point the next tail to the head of the list
+\State \textbf{if} stack != EMPTY
+\State \qquad \qquad set the tail equal to stack s.tail
+\State size += stack size 
+\end{algorithmic}
+\end{algorithm}
+Given that each line respective will run  O(1) times, an equation to represent it would be as follows: \\
+\begin{center}
+$0(c1 + c2 + c3 + c4 + c5 + c6) = O(1)$ \\
+\end{center}
+\linebreak
+ \subsection*{4. A Hybrid Merge/Insertion Sort Algorithm}
+ \linebreak
+ \textbf{14 points} \\
+ \linebreak
+ Although MergeSort runs $\theta(n lg n)$ worst-case time and InsertionSort runs in $\theta(n^2)$ worst-case time, the constant factors in insertion sort (including the fact that it can sort in-place) can make it faster in practice for small problem sizes on many machines. Thus, it makes sense to \textbf{coarsen} the leaves of the MergeSort recursion tree by using InsertionSort within MergeSort when subproblems become sufficiently small. \\
+ Consider a modification to MergeSort in which $\frac{n}{k}$ sublists of length k are sorted using InsertionSort and are then merged using the standard merging mechanism, where k is a value to be determined in this problem. In the first two parts of the problem, we get expressions for the contributions of InsertionSort and MergeSort to the total runtime as a function of the input size n and the cutoff point between the algorithms k. \\
+ \linebreak
+ \textbf{(a)} Show that InsertionSrt can sort the $\frac{n}{k}$ sublists, each of length k, in $\theta(nk)$ worst-case time. To do this: \\
+ \linebreak
+ \quad 1. Write the cost for sorting k items with InsertionSort, \\
+ \quad 2. Multiply by how many times you have to do it, and \\
+ \quad 3. Show that the expression you get simplifies to $\theta(nk0)$.\\
+ \linebreak
+ The cost for sortking k items with InserstionSort is $O(k^2)$ time, depending on the amount of k-elements within the given list.   By multiplying this by the sublist, given as $\frac{n}{k}$, you now have $O(k^2*\frac{n}{k})$, which simplifies to $O(nk)$. This is given to be the worst case time scenario. \\ 
+ \linebreak
+ \textbf{(b)} Show that MergeSort can merge the $\frac{n}{k}$ sublists of size k in $\theta(n lg (\frac{n}{k}))$ worst-case time. To do this: \\
+ \linebreak
+\quad 1. Draw the recursion tree for the merge (a modification of figure 2.5), \\
+\quad 2. Determine how many elements are merged at each level, \\
+\quad 3. Determine the height of the recursion tree from the $\frac{n}{k}$ lists that InsertionSort had already taken care of up to the single list that results at the end, and \\
+\quad 4. Show how you get the final expression $\theta(n lg (\frac{n}{k}))$ from these two values. \\
+\linebreak
+\textbf{Putting it together:} The asymptotic runtime of the hybrid algorithm is the sum of the two expressions above: the cost to sort the $\frac{n}{k}$ sublists of size k, and the cost to divide and merge them. You have just shown this to be: \\
+\begin{center}
+$\theta(nk + n lg (\frac{n}{k}))$ \\
+\end{center}
+In the second parts of the 	question, we explore what k can be. \\
+\linebreak
+\textbf{(c)} The bigger we make k the bigger lists InsertionSort has to sort. At some point, its $\theta(n^2)$ growth will overcome the advantage it has over MergeSort in lower constant overhead. How big can k get before InsertionSort starts slowing things down? Derive a theoretical answer by proving the largest value for k for which the hybird sort has the same $\theta$ runtime as a standard $\theta(n lg n)$ MergeSort. This will be an upper bound on k. To do this: \\
+\linebreak
+\quad 1. Looking at the expression for the hybrid algorithm runtime $\theta(nk + nlg (\frac{n}{k}))$, identify the upper bound on k expressed as a function of n, above which $\theta(nk + nlg (\frac{n}{k}))$ would grow faster than $\theta(n lg n)$. Give the f for k = $\theta(f(n)$ and argue for why it is correct. \\
+\quad 2. Show that this value for k works by substituting it into $\theta(nk + nlg (\frac{n}{k}))$ and showing that the resulting expression simplifies to $\theta(n lg n)$/ \\
+\linebreak
+The upper bound on k,  expressed as a function of n above can be denoted to not grow faster than $log n$. The modified algorithm therefore, must have the same running time as the standard running time of merge sort. To understand this,  the resulting expression can be substituted as follows: \\
+\begin{center}
+$\theta(nk + nlog(\frac{n}{k})) = \theta(nk + nlogn - nlogk)$
+\end{center}
+This equation therefore, must be the same as $\theta(nlogn)$. \\
+\linebreak
+\textbf{(d)} Now suppose we have two specific implementations of InsertionSort and MergeSort. how should we choose the optimal value of k to use for these given implementations in practice? \\
+\linebreak
+As stated above in part (c), the upper bound of k should be a value that will minimize the average or worst running time of the combined InsertionSort and MergeSort algorithm.  Therefore,  k should be the list in which InsertionSort would run faster than MergeSort. 
+\end{document}	

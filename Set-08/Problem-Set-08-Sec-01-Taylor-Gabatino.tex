@@ -1,0 +1,208 @@
+% DOCUMENT FORMATING
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+
+% PACKAGES
+\usepackage{amsmath} % For extended formatting
+\usepackage{amssymb} % For math symbols
+\usepackage{amsthm} % For proof environment
+\usepackage{array} % For tables
+\usepackage{enumerate} % For lists
+\usepackage{extramarks} % For headers and footers
+\usepackage{blindtext}
+\usepackage{fancyhdr} % For custom headers
+\usepackage{graphicx} % For inserting images
+\usepackage{multicol} % For multiple columns
+\usepackage{verbatim} % For displaying code
+\usepackage{tkz-euclide}	
+\usepackage{pgfplots}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+%\usepackage[Algorithm]{algorithm}
+%\usepackage[noend]{algpseudocode}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+% SET UP HEADER AND FOOTER
+\pagestyle{fancy}
+\lhead{\MyCourse} % Top left header
+\chead{\MyTopicTitle} % Top center header
+\rhead{\MyAssignment} % Top right header
+\lfoot{\MyCampus} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{\MySemester} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+% ----------
+% TITLES AND NAMES 
+% ----------
+
+\newcommand{\MyCourse}{ICS 311, Sadowski, Section 1}
+\newcommand{\MyTopicTitle}{Problem Set 08}
+\newcommand{\MyAssignment}{Taylor D. Gabatino}
+\newcommand{\MySemester}{Fall 2020}
+\newcommand{\MyCampus}{University of Hawaii at Manoa}
+\begin{document}
+\subsection*{1. SCC (10 pts)} 
+\linebreak
+In the following, use the SCC and DFS algorithms of the CLRS textbook: \\
+\begin{center}
+\includegraphics[scale=0.5]{1pic.png} \\
+\end{center}
+\begin{center}
+\includegraphics[scale=0.5]{1pica.png} \\
+\end{center}
+1. \underline{Run DFS on this graph.} To make grading and comparison of solutions easier, visit vertices in alphabetical order (both in the main loop of DFS and the adjacency list loop of DFS-Visit). \\
+\begin{center}
+\includegraphics[scale=0.5]{1a.png}\\
+\end{center}
+\textbf{a. For each vertex, show values d (discovery), f (finish), and $\pi$ (parent).} \\
+%Insert Table Here
+\linebreak
+\begin{center}
+\includegraphics[scale=0.5]{1a1.png} \\
+\end{center}
+\linebreak
+\textbf{b. Write the vertices in order from largest to smallest finish time:} \\
+\linebreak
+Order from smallest to largest goes from left to right: \\
+\begin{center}
+\textbf{LARGEST} l $>$k $>$a $>$ c $>$b $>$d $>$h $>$i $>$j $>$e $>$f $>$g \textbf{SMALLEST} \\
+\end{center}
+2. Now \underline{run DFS on the transpose graph, visiting vertices in order of largest to smallest finish time} from the DFS of step 1 (as required by the SCC algorithm). Again, show values d (discovery), f (finish), and $\pi$ (parent). \\
+\begin{center}
+\includegraphics[scale=0.5]{2pic.png} \\
+\end{center}
+%Insert Table Here
+\begin{center}
+\includegraphics[scale=0.5]{1a2.png} \\
+\end{center}
+3. List the strongly connected componenets you found by first listing the tree edges in the transpose graph that define the SCC, and then listing the vertices in the SCC (the first SCC containing a single vertex is shown): \\
+\linebreak
+\begin{center}
+SCC 1: Tree Edges: { }; Vertices: {l} \\
+SCC 2: Tree Edges: {k} \\
+SCC 3: Tree Edges: {(a,b),(b,c)}; Vertices: {a,b,c} \\
+SCC 4: Tree Edges: {(d,e), (e,h)}; Vertices: {d,e,h} \\
+SCC 5: Tree Edges: { }; Vertices: {i} \\
+SCC 6: Tree Edges: { }; Vertices: {j} \\
+SCC 7: Tree Edges: {(f,g)}; Vertices: {f,g} \\
+\end{center}
+\linebreak
+\subsection*{2. (10 pts) Bottom-Up Longest-Paths}
+\linebreak
+In class for Topic 12 Dynamic Programming, you (1) characterized the structure of an optimal solution for Longest Paths; (2) recursively defined the value of an optimal solution; (3) recursively computed the value of an optimal solution; and (4) memoize this recursive solution. Then in problem Set 7, you wrote additional code to actually recover the path. \\
+\linebreak
+Perhaps you thought you were done, but here, because we know how much you love dynamic programming problems, you will solve the same problem in $theta(V+E)$ using a \textbf{bottom-up} dynamic programming approach. At least, all of the preliminaries have been done! Be sure to include dist and next. \\
+\linebreak
+Hint: We need to arrange to solve smaller problems before larger ones: use topological sort (which you may assume has already been written). You may want to write the explanation for (b) before writing the pseudocode to guide your coding, but then revise it to reference the lines of code. \\
+\linebreak
+(a) Show your pseudocode for Longest-Path-Bottom-Up \\
+\linebreak
+\begin{algorithm}[H]
+\SetAlgoLined
+let dist[1...n] be a new Array\;
+let prev[1...n] be a new Array\;
+Topological-Sort(G) \;
+\For {i = 1 to G.V}
+{
+dist[i] = - $\infty$ \;
+}
+\EndFor
+dist[s] == 0 \;
+\For {each element G.V in topological order, starting from S} 
+{
+\For {edge (u,v) within G.adj[u]} 
+{
+\If {dist[u] + w(u,v) is an element of G.adj[u]}
+{
+dist[v] = dist[u] + w(u,v)\;
+prev[v] = u \;
+}
+}
+\EndFor
+}
+\EndFor
+\Return (dist,next) \;
+ \caption{Longest-Path-Bottom-Up(G,s,t,dist,prev)}
+\end{algorithm} \\
+\linebreak
+(b) Explain why your algorithm works; in particular, why topological sort is useful. \\
+\linebreak
+This algorithm works because it sorts the given path to choose the next adjacent vertex.  By sorting the subsections of the graph into smaller ordered portions, once the vertex at u is discovered, all other given vertices have already been processed in topological order. Given this information, all of the directed edges of u are taken into account \\
+\linebreak
+(c) Analyze its asymptotic run time. \\
+\linebreak
+The given asymptotic run time would be $\theta(V+E)$. Since this is based off of Topological Sort, the given asymptotic run time of that particular algorithm is $\theta(V+E)$.  Starting the algorithm, the first prominent feature is on line 4 to 5; since $i=1$ must traverse every vertice, the average of this gives the run time of $\theta(V)$. Given line 7 of this algorithm will run $\lvert$V$\rvert$ times, it is known that the number of vertices traversed will also traverse the number of edges. \\
+*Got help from Matthew Kirts in Section 01 on Question 02. * \\
+\subsection*{3. (10 pts) "Really Bad Networks"}
+\linebreak
+Suppose we have a network in which information or material flows between entities that we will call "nodes", and this flow is directed (need not to go both ways) over "links:. We can model such a network using a directed graph G = (V,E): Nodes within a strongly connected can send and receive information to and from any node within the same strongly connected component. Real world networks are usually designed in such a way that there are more than one simple path between every pair of vertices: Then if any link becomes unavailable, information can still be distributed using the remaining links. \\
+\linebreak
+In this problem we are interested in detecting \textbf{really bad networks}. Given a directed graph G = (V,E) design an algorithm that determines whether there is at most one directed path between every pair of nodes in G. It will return TRUE if the network is really bad, and FALSE if not. For full credit, your algorithm should run in O(V(V+E)) time. \\
+\linebreak
+(a) Show your pseudocode. \\
+\linebreak
+\begin{algorithm}[H]
+\SetAlgoLined
+\For {each node u within G.V} 
+{
+Run DFS(Depth-First-Search) beginning from u \;
+\If {vertex v (a black node) is visited}
+{
+\Return FALSE  // This is not a bad network \;
+}
+\EndIf
+}
+\EndFor
+\Return TRUE // This is a bad network\;
+ \caption{Discovering-Bad-Networks}
+\end{algorithm} \\
+(b) Explain why it works. \\
+\linebreak
+This algorithm works because it considers the paths to given nodes and executes these conditionals if they are true to detect the bad networks. By maintaining the properties of Depth-First-Search(DFS), it checks to see the children of the graph and follows the forward edge of (u,v), along with the cross edge (w,v). The detection of the forward and cross edges are checked by traversing using the method of Depth-First-Search(DFS).  \\
+\linebreak
+(c) Analyze its asymptotic run time. \\
+\linebreak
+The run time of this given algorithm is $O(V(V+E))$, since it must run through each given iteration of Depth-First-Search, which is known to run in $O(V+E)$ run time. \\
+\subsection*{4. (10 pts) Counting Simple Paths in a DAG} 
+Design an algorithm that takes as input a directed acyclic graph G = (V,E) and two vertices s and t, and returned the number of simple paths from s to t in G. For example, the directed acyclic graph on the right contains exactly four simple paths from vertex p to vertex v: pov, poryv, posryv, and psryv. Your algorithm should run in O(V+E). (Your algorithm needs only to count the simple paths, not list them.) \\
+\linebreak
+Hints: Solve the more general case of number of paths to all vertices. Use topological sort to solve smaller problems before larger ones. Be sure to consider the boundary cases where s = t and where there are no simple paths between s and t. \\
+\linebreak
+(a) Show the pseudocode. \\
+\linebreak
+\begin{algorithm}[H]
+\SetAlgoLined
+\For {each v in G.V} 
+{
+v.pi = 0 \;
+}
+\EndFor
+t.p = 1 \;
+Find the Transpose of Graph G as $G^T = (V,E^T)$ \;
+Find the topological order of Transpose Graph G $G^T$ \;
+\For {each v within the topological order of transpose $G^T$}
+{
+\If {v == s}
+{
+\Return v.pi \;
+}
+\EndIf
+\For {each given u in Transpose $G^T$.adj[v]}
+{
+v.pi = v.pi + u.pi \;
+}
+\EndFor
+}
+\EndFor
+ \caption{Counting-Simple-Paths-In-Dag(G,s,t)}
+\end{algorithm} \\
+(b) Explain why it works. \\
+\linebreak
+This algorithm works because it takes into consideration the given number of paths. The path from a given vertex v to t will be the sum of the number of paths that has a given edge to v.  The given values of the neighbors of these paths are sorted within the topological order of the graph, so t would have already been within the path visited.  \\
+\linebreak
+(c) Analyze its asymptotic run time. \\
+The given asymptotic run time is $O(V+E)$.  Analyzing the algorithm by lines, lines 1-3 will run in $O(V)$, lines 5-6 is $O(V + E)$, which depends on the transpose of the graph processing G(V,E). The loop that runs through the transpose of the graph is also $O(V + E)$. Therefore, the final run time of this algorithm is $O(V + E)$.  \\
+*Got help from Matthew Kirts in Section 01 on Question 04. *
+\end{document}

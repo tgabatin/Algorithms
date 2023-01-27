@@ -1,0 +1,129 @@
+% DOCUMENT FORMATING
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+
+% PACKAGES
+\usepackage{amsmath} % For extended formatting
+\usepackage{amssymb} % For math symbols
+\usepackage{amsthm} % For proof environment
+\usepackage{array} % For tables
+\usepackage{enumerate} % For lists
+\usepackage{extramarks} % For headers and footers
+\usepackage{blindtext}
+\usepackage{fancyhdr} % For custom headers
+\usepackage{graphicx} % For inserting images
+\usepackage{multicol} % For multiple columns
+\usepackage{verbatim} % For displaying code
+\usepackage{tkz-euclide}	
+\usepackage{pgfplots}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+%\usepackage[Algorithm]{algorithm}
+%\usepackage[noend]{algpseudocode}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+% SET UP HEADER AND FOOTER
+\pagestyle{fancy}
+\lhead{\MyCourse} % Top left header
+\chead{\MyTopicTitle} % Top center header
+\rhead{\MyAssignment} % Top right header
+\lfoot{\MyCampus} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{\MySemester} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+% ----------
+% TITLES AND NAMES 
+% ----------
+
+\newcommand{\MyCourse}{ICS 311, Sadowski, Section 1}
+\newcommand{\MyTopicTitle}{Problem Set 09}
+\newcommand{\MyAssignment}{Taylor D. Gabatino}
+\newcommand{\MySemester}{Fall 2020}
+\newcommand{\MyCampus}{University of Hawaii at Manoa}
+\begin{document}
+\subsection*{1.  (8 Pts) Analyzing a Minimum Spanning Forest Algorithm}
+ \begin{center}
+ \includegraphics[scale=0.5]{Part1pic.png}\\
+ \end{center}
+ \textbf{a.} Complete the following proof that this algorithm constructs an MSF. A partial proof is given below; you complete it. \\
+ \linebreak
+ You will use this counterpart to the safe edge theorem, which we prove for you: \\
+ \linebreak
+ \textbf{Safe edge removal theorum:} Given a graph with a single cycle, removing the edge with the maximum weight on that cycle results in a forest with the smallest total weight. \\
+ \linebreak
+ \textbf{Proof:} \\
+ Since there is only one cycle, to create a forest, we need to remove only one edge from the cycle. Removing any edge that is not the largest from the cycle will result in a forest with a larger total weight. Q.E.D. \\
+ \linebreak
+ You will now prove the rest by filling in the following: \\
+ \linebreak
+ \textbf{Claim:} When Build-MSF-By-Add-And-Fix terminates, it will produce a Minimum Spanning Forest. \\
+ \linebreak
+ \textbf{Proof:} By induction on the number of edges inspected of this proposition: \\
+ \textbf{Proposition P(k):} "After k edges have been inspected (after k iterations), the graph F is a minimum spanning forest (MSF) of the graph G that contains only the edges inspected in line 2." \\
+ \linebreak
+ \textbf{Base k = 1:}\\
+ After an edge is inspected, it will be the only edge that will have a cycle, resulting in creating a Minimum Spanning Tree. \\
+ \linebreak
+ \textbf{Induction P(k) $=>$ P(k+1)} (Assume P(k) is true and prove P(k + 1) is true.) There will be two cases to consider: \\
+ \linebreak
+ Case 1: The addition of an edge creates a cycle.\\ 
+ In the case of the inductive statement, and the assumption that P(k) is true, begin by adding the P(k + 1) edge. This edge, denoted as $e$ creates a cycle. Proposition P(k) states that the graph has a Minimum Spanning Forest (MSF) that contain only the edges that are inspected in line 2. This means that if and when the cycle is created by adding edge $e$ from P(k + 1), the Safe Edge Removal Theorem can be implemented, stating that the maximum weight in the cycle is a result of the creation of the Minimum Spanning Tree. \\
+ \linebreak
+ Case 2: The addition of an edge does not create a cycle. \\
+ In the case of the inductive statement and the assumption that P(k) is true, begin by adding the P(k + 1) edge. This edge, denoted as $e$ will not create a cycle. This results in a a forest, but there will be a minimum weight over the aggregation of edges due to the creation of two separate trees. By definition, this still results in a forest, meaning it is a minimum spanning forest. \\
+ \linebreak
+ \textbf{Conclusion:} Use the above to conclude that F is correct when the loop terminates and the algorithm returns F: \\
+ \linebreak
+ \textbf{b.} Describe an efficient algorithm for finding the maximum weight edge on a cycle, to use in lines 4 - 5. Give the time complexity. \\
+ \linebreak
+ An efficient algorithm for finding the maximum weight edge on a cycle can be implemented in lines 4 - 5 of this algorithm. Currently,  line 4 checks whether a forest has a cycle, and if so, allows an edge to have a maximum edge on that given cycle. An algorithm that can be used to detect this is to have a variable keep track of these maximum weight edges and compare them to each other. Once the maximum edge in the cycle is found, this value can be returned. The time complexity for recording the actual weight on the cycle can run in O(1) time, but in regards to cycling through the data that stores the edge values would run in O(n) time, with n being the number of edge weights discovered. \\
+ \linebreak
+ \textbf{c.} Analyze the time complexity of Build-MSF-By-Add-And-Fix, assuming you use the algorithm in (b): \\
+ \linebreak
+ Assuming the implementation of the algorithm designed in b, which keeps track of the weights of the edges, the runtime as a result of this addition to Build-MSF-By-Add-And-Fix is $O(V+E)$. Although stated above that the implemented algorithm for finding a max weight on the edges is O(n), it is known that each edge weight accounts for a given edge in the cycle. Therefore, the edges can be discussed as E in the runtime analysis. So the final time complexity of this algorithm with the addition of finding the maximum weight edge on a cycle is $O(V + E)$. 
+ \subsection*{2. (6 pts) MST on Restricted Range of Integer Weights}
+ Suppose edge weights are restricted as follows. For each restriction: \\
+ $\bullet$ Describe a modification to Kruskal's algorithm that takes advantage of this restriction, and \\
+ $\bullet$ Analyze its runtime to prove that your modified version runs faster. \\
+ \linebreak
+ \textbf{a.} All edge weights are integers in the range from 1 to C for some constant C. \\
+ In this version of Kruskal's algorithm, all edge weights are integers in the range 1 to C for some given constant C.  A modification of this algorithm that takes advantage of this given restriction is illustrated in line 4 in the algorithm, which sorts the edges of G.E. into nondecreasing order by weight w. Given the weights of the integers are in the range 1 to C,  an implementation of Counting Sort would order these weighted values, with a runtime of O(E), where E is the amount of edges in the weighted graph.  Since Counting Sort is taken into account in this new algorithm, the overall run time is $O(C+E+VlogV)$, which is calculating the constant C, and the edges and vertices. \\
+ \linebreak
+ \textbf{b.} All edge weights are integers in the range from 1 to $\lvert$V$\rvert$. \\
+ In this version of Kruskal's algorithm, all edge weights are integers in the range from 1 to $\lvert$V$\rvert$.  A modification of this algorithm that takes advantage of this given restriction can again be illustrated in line 4 of the algorithm, which sorts the edges of G.E. into nondecreasing order by weight w. By implementing Counting-Sort, the edges can be sorted with a $O(V + E)$ runtime.  This modified version of Kruskal's algorithm can now run in $O(E+VlogV)$ time., since this takes into account the number of edges and all the vertices it must travese. \\
+\subsection*{3. (10 pts) Suppose we change the representation of edges from adjacency lists to \underline{matrices}.}
+Assume that vertices are represented as integers [1...$\lvert$V$\rvert$] and that G.E. is a symmetric adjacency matrix where each G.E[u,v] contains the weight on edge (u,v) $\in$ E, or 0 if there is no edge. \\
+\linebreak
+\begin{center}
+\includegraphics[scale=0.5]{MSTKruskal.png} \\
+\end{center}
+\textbf{a.} What line(s) would have to change in the CLRS version of Kruskal's algorithm, (shown), and how? (No need to write the code; just explain the changes required for the matrix representation.) \\
+\linebreak
+A change that would be required for the given matrix representation is an adjustment to line 4 in this code. Currently, line 4 will sort the edges of G.E into nondecreasing order by weight w.  Since it currently sorts the edges, the adjustment would need to take into account the set of edges within the matrix, and scan through the given edges, sorting them accordingly. \\
+\linebreak
+\textbf{b.} What would be the resulting asymptotic runtime of Kruskal's algorithm on both dense $(E=O(V^2))$ and sparse $(E=O(V))$ graphs, and why? \\
+The asymptotic runtime, respective to dense graphs is $O(V^2logE)$, and the runtime respective to spare graphs would be $O(V^2)$. For a dense graph it is not possible to have a combination of $V^2$ edges, while in a spare graph,  the sorting of an edge will run in $O(E log E)$, where $V^2$ will dominate.  This means that the resulting asymptotic runtime of Kruskal's algorithm is $O(V^2)$. \\
+\linebreak
+\begin{center}
+\includegraphics[scale=0.5]{Prim.png}\\
+\end{center}
+\textbf{c.} What line(s) would have to change in the CLRS version of Prim's algorithm (shown), and how? \\
+\linebreak
+The instruction in line 9 of Prim's algorithm currently analyzes the case for a vertex being an element of G.Adj[u]. This must be modified to instead accept the vertices and edges in terms of an adjacency matrix, where the cycling of this representation of data is searching from the point u. Another modification that follows is between lines 10 to 11, where currently, if the vertex is an element of a queue, and if the weight of the edge is less than the vertex's key, the the vertex parent is set to be u. This would need to be modified to take into account the matrix that was changed in line 9, where the representation of this matrix as an array would need to store the value of parent in another matrix or array. \\
+\linebreak
+\textbf{d.} What would be the resulting asymptotic runtime of Prim's algorithm on both dense $(E = O(V^2))$ and spare $(E = O(V))$ graphs, and why? \\
+\linebreak
+The asymptotic runtime, respective to dense graphs is $O(V^2logV)$, and the runtime respective to sparse graphs would be $O(V^2 + VlogV)$. This means that the resulting overall runtime of Prim's algorithm is $O(V^2 + ElogV)$. \\
+\subsection*{4. (6 pts) Divide and Conquer MST}
+Consider the following divide-and-conquer algorithm for computing minimum spanning trees. The intuition is that we can divide a graph into half, solve the MST problem for each half, and then find a minimum cost edge spanning the two halves. More formally: \\
+\linebreak
+Given G = (V,E), partition V into $V_1$ and $V_2$ such that $\lvertV_1\rvert$ and $\lvertV_2\rvert$ differ by at most 1. Let $E_1$ be the set of edges that are incident only on vertices in $V_1$ and let $E_2$ be the set of edges that are incident only on vertices in $V_2$. Recursively solve the MST problem on each of the two subgraphs $G_1 = (V_1, E_1)$ and $G_2 = (V_2, E_2)$. Finally, select the minimum-weight edge in E that crosses the cut $(V_1,V_2$) and use this edge to join the resulting two minimum spanning trees into a single spanning tree. \\
+\linebreak
+Prove that this algorithm correctly computes a minimum spanning tree of G, or provide an example for which the algorithm fails. \\ 
+\linebreak
+This algorithm can correctly compute a minimum spanning tree. An example for this can be produced through providing a counter example, where it shows why it will fail.  \\
+\linebreak
+Suppose there is a given set of four vertices based on the example outlined above. These vertices can be denoted through letters, such as $a,b,c,d$. The partition of these vertices can be as such, where $V_1$ and $V_2$ differ by at the most 1, and $E_1$ can be represented as the set of edges that are incident only on vertices in $V_1$ and $E_2$ be the set of edges on incident in vertices $V_2$. If this is graphically represented, this can be cut with $V_1$ represented as the nodes {a,b} and $V_2$ being represented as {c,d}. If the given weight w(u,v) from a to be is smaller than the given weight w(u,v) from c to d, this representation can be mapped differently with different values because of this cut. Overall, this proves the counterexample, since the resulting MST, depending on the edge weights will be either lighter or heavier than the other. \\
+\end{document}
